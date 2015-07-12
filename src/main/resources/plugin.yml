@@ -1,9 +1,8 @@
 name: VanishNoPacket
 main: org.kitteh.vanish.VanishPlugin
-version: '${vnp-version}'
-website: http://kitteh.org
-softdepend: [Essentials,dynmap,JSONAPI,bPermissions,Spout,GeoIPTools,TagAPI,ProtocolLib,Vault]
-author: mbaxter
+version: '1.0'
+softdepend: [Essentials,ProtocolLib]
+authors: [mbaxter, VirusTotal]
 description: Vanish for the distinguished admin
 dev-url: http://dev.bukkit.org/server-mods/vanish/
 commands:
@@ -80,12 +79,6 @@ permissions:
   vanish.silentquit:
     default: false
     description: ALWAYS quit silently. 
-  vanish.silentchests:
-    default: false
-    description: Allows user to read chests silently while vanished
-  vanish.toggle.silentchests:
-    default: false
-    description: Toggle ability to read chests silently
   vanish.toggle.see:
     default: false
     description: Toggle seeing other vanished players
@@ -98,9 +91,6 @@ permissions:
   vanish.toggle.nointeract:
     default: false
     description: Toggle interaction ability (doors, pressurepads, buttons, breaking or placing blocks, etc)
-  vanish.toggle.nochat:
-    default: false
-    description: Toggle ability to chat
   vanish.toggle.nohunger:
     default: false
     description: Toggle ability to not lose hunger
@@ -120,7 +110,6 @@ permissions:
     default: false
     description: Allows user to toggle all their settings ingame
     children:
-      vanish.toggle.silentchests: true
       vanish.toggle.see: true
       vanish.toggle.nopickup: true
       vanish.toggle.nofollow: true
@@ -158,45 +147,6 @@ permissions:
   vanish.reload:
     default: false
     description: Reloads some VNP systems
-  vanish.effects.smoke:
-    default: false
-    description: Creates smoke effect when vanishing and re-appearing
-  vanish.effects.explode:
-    default: false
-    description: Creates explosion effect when vanishing and re-appearing
-  vanish.effects.lightning:
-    default: false
-    description: Creates a lightning barrage around a player when vanishing and re-appearing
-  vanish.effects.flames:
-    default: false
-    description: Creates a mob spawner flames effect around a player when vanishing and re-appearing
-  vanish.effects.bats:
-    default: false
-    description: Creates a swarm of bats around a player when vanishing and re-appearing
-  vanish.effects.toggle.smoke:
-    default: false
-    description: Toggle smoke on vanish toggle
-  vanish.effects.toggle.explode:
-    default: false
-    description: Toggle explode on vanish toggle
-  vanish.effects.toggle.lightning:
-    default: false
-    description: Toggle lightning on vanish toggle
-  vanish.effects.toggle.flames:
-    default: false
-    description: Toggle flames on vanish toggle
-  vanish.effects.toggle.bats:
-    default: false
-    description: Toggle bats on vanish toggle
-  vanish.effects.toggle.all:
-    default: false
-    description: Toggle all vanish toggle effects
-    children:
-      vanish.effects.toggle.smoke: true
-      vanish.effects.toggle.explode: true
-      vanish.effects.toggle.lightning: true
-      vanish.effects.toggle.flames: true
-      vanish.effects.toggle.bats: true
   vanish.op:
     default: op
     description: The permission nodes given to ops
@@ -224,13 +174,11 @@ permissions:
       vanish.preventdamage: true
       vanish.statusupdates: true
       vanish.adminalerts: true
-      vanish.silentchests: true
   vanish.*:
     default: false    
     description: Oh god everything.
     children:
       vanish.standard: true
-      vanish.nochat: true
       vanish.silentjoin: true
       vanish.silentquit: true
       vanish.toggle.all: true
@@ -239,9 +187,3 @@ permissions:
       vanish.permtest.all: true
       vanish.spout.status: true
       vanish.reload: true
-      vanish.effects.smoke: true
-      vanish.effects.explode: true
-      vanish.effects.lightning: true
-      vanish.effects.flames: true
-      vanish.effects.bats: true
-      vanish.effects.toggle.all: true
