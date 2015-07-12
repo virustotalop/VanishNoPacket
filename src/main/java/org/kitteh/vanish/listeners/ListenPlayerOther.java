@@ -28,7 +28,6 @@ import org.bukkit.inventory.Inventory;
 import org.kitteh.vanish.Settings;
 import org.kitteh.vanish.VanishPerms;
 import org.kitteh.vanish.VanishPlugin;
-import org.kitteh.vanish.metrics.MetricsOverlord;
 
 public final class ListenPlayerOther implements Listener {
     private final VanishPlugin plugin;
@@ -46,7 +45,7 @@ public final class ListenPlayerOther implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
-        if (this.plugin.getManager().isVanished(event.getPlayer()) && VanishPerms.canNotInteract(event.getPlayer())) {
+        if (this.plugin.getManager().isVanished(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
@@ -64,7 +63,7 @@ public final class ListenPlayerOther implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
-        if (!this.plugin.chestFakeInUse(player.getName()) && !player.isSneaking() && (event.getAction() == Action.RIGHT_CLICK_BLOCK) && this.plugin.getManager().isVanished(event.getPlayer()) && VanishPerms.canReadChestsSilently(event.getPlayer())) {
+        if (!this.plugin.chestFakeInUse(player.getName()) && !player.isSneaking() && (event.getAction() == Action.RIGHT_CLICK_BLOCK) && this.plugin.getManager().isVanished(event.getPlayer())) {
             final Block block = event.getClickedBlock();
             Inventory inventory = null;
             final BlockState blockState = block.getState();
@@ -126,7 +125,7 @@ public final class ListenPlayerOther implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if (this.plugin.getManager().isVanished(event.getPlayer()) && VanishPerms.canNotPickUp(event.getPlayer())) {
+        if (this.plugin.getManager().isVanished(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
@@ -134,14 +133,10 @@ public final class ListenPlayerOther implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        if (this.plugin.getManager().isVanished(player)) {
-            this.plugin.messageStatusUpdate(ChatColor.DARK_AQUA + event.getPlayer().getName() + " has quit vanished");
-        }
         this.plugin.getManager().playerQuit(player);
         this.plugin.hooksQuit(player);
         this.plugin.getManager().getAnnounceManipulator().dropDelayedAnnounce(player.getName());
         if (!this.plugin.getManager().getAnnounceManipulator().playerHasQuit(player.getName()) || VanishPerms.silentQuit(player)) {
-            MetricsOverlord.getQuitInvisTracker().increment();
             event.setQuitMessage(null);
         }
         this.plugin.chestFakeClose(event.getPlayer().getName());

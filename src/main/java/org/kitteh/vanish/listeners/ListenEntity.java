@@ -20,7 +20,7 @@ public final class ListenEntity implements Listener {
         this.plugin = instance;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         final Entity smacked = event.getEntity();
         if (this.plugin.getManager().getBats().contains(smacked.getUniqueId())) {
@@ -29,7 +29,7 @@ public final class ListenEntity implements Listener {
         }
         if (smacked instanceof Player) {
             final Player player = (Player) smacked;
-            if (this.plugin.getManager().isVanished(player) && VanishPerms.blockIncomingDamage(player)) {
+            if (this.plugin.getManager().isVanished(player)) {
                 event.setCancelled(true);
             }
         }
@@ -45,16 +45,18 @@ public final class ListenEntity implements Listener {
                     player = (Player) projectile.getShooter();
                 }
             }
-            if ((player != null) && this.plugin.getManager().isVanished(player) && VanishPerms.blockOutgoingDamage(player)) {
+            if ((player != null) && this.plugin.getManager().isVanished(player)) {
                 event.setCancelled(true);
+                
             }
         }
     }
+    
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onEntityTarget(EntityTargetEvent event) {
-        if ((event.getTarget() instanceof Player) && this.plugin.getManager().isVanished((Player) event.getTarget()) && VanishPerms.canNotFollow((Player) event.getTarget())) {
-            event.setCancelled(true);
+        if ((event.getTarget() instanceof Player) && this.plugin.getManager().isVanished((Player) event.getTarget())) {
+        	event.setCancelled(true);
         }
     }
 

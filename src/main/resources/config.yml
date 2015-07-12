@@ -12,9 +12,6 @@ fakeannounce:
     quit: '%p left the game.'
 hooks:
     essentials: false
-    dynmap: false
-    JSONAPI: false
-    spoutcraft: false
 checkupdates: true
 permissionsupdates:
     checkonworldchange: false
@@ -24,6 +21,5 @@ effects:
 colornametags: true
 
 permtest: false
-debug: false
 configVersionDoNotTouch: 
     SeriouslyThisWillEraseYourConfig: 5

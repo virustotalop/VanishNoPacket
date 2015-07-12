@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.vanish.metrics.MetricsOverlord;
 
 public final class VanishCommand implements CommandExecutor {
     private final VanishPlugin plugin;
@@ -16,7 +15,6 @@ public final class VanishCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        MetricsOverlord.getCommandTracker().increment();
         // First, the short aliases
         if (label.length() == 2) {
             if (sender instanceof Player) {
@@ -31,9 +29,6 @@ public final class VanishCommand implements CommandExecutor {
                 }
                 if (label.equals("ni")) {
                     this.toggle((Player) sender, "nointeract");
-                }
-                if (label.equals("nc")) {
-                    this.toggle((Player) sender, "nochat");
                 }
             }
             return true;
@@ -122,14 +117,8 @@ public final class VanishCommand implements CommandExecutor {
                 if (VanishPerms.canToggleDamageOut(player)) {
                     this.appendList(toggleReply, this.colorize(VanishPerms.blockOutgoingDamage(player)) + "damage-out" + ChatColor.DARK_AQUA);
                 }
-                if (VanishPerms.canToggleNoChat(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canNotChat(player)) + "nochat" + ChatColor.DARK_AQUA);
-                }
                 if (VanishPerms.canToggleNoHunger(player)) {
                     this.appendList(toggleReply, this.colorize(VanishPerms.canNotHunger(player)) + "nohunger" + ChatColor.DARK_AQUA);
-                }
-                if (VanishPerms.canToggleSilentChestReads(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canReadChestsSilently(player)) + "chests" + ChatColor.DARK_AQUA);
                 }
                 if (toggleReply.length() > 0) {
                     toggleReply.insert(0, ChatColor.DARK_AQUA + "You can toggle: ");
@@ -148,21 +137,6 @@ public final class VanishCommand implements CommandExecutor {
             // List my toggles
             if (args.length == 1) {
                 final StringBuilder toggleReply = new StringBuilder();
-                if (VanishPerms.canToggleSmoke(player)) {
-                    toggleReply.append(this.colorize(VanishPerms.canEffectSmoke(player)) + "smoke" + ChatColor.DARK_AQUA);
-                }
-                if (VanishPerms.canToggleEffectExplode(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canEffectExplode(player)) + "explode" + ChatColor.DARK_AQUA);
-                }
-                if (VanishPerms.canToggleEffectLightning(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canEffectLightning(player)) + "lightning" + ChatColor.DARK_AQUA);
-                }
-                if (VanishPerms.canToggleEffectFlames(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canEffectFlames(player)) + "flames" + ChatColor.DARK_AQUA);
-                }
-                if (VanishPerms.canToggleEffectBats(player)) {
-                    this.appendList(toggleReply, this.colorize(VanishPerms.canEffectBats(player)) + "bats" + ChatColor.DARK_AQUA);
-                }
                 if (toggleReply.length() > 0) {
                     toggleReply.insert(0, ChatColor.DARK_AQUA + "You can toggle: ");
                 } else {
@@ -249,14 +223,6 @@ public final class VanishCommand implements CommandExecutor {
             return true;
         }
 
-        // Continue? 
-
-        // 3
-
-        // 2
-
-        // 1
-
         return true;
     }
 
@@ -281,7 +247,6 @@ public final class VanishCommand implements CommandExecutor {
 
     private void toggle(Player player, String toggle) {
         final StringBuilder message = new StringBuilder();
-        MetricsOverlord.getToggleTracker().increment();
         boolean status = false;
         if (toggle.equalsIgnoreCase("see") && VanishPerms.canToggleSee(player)) {
             status = VanishPerms.toggleSeeAll(player);
@@ -302,30 +267,9 @@ public final class VanishCommand implements CommandExecutor {
         } else if (toggle.equalsIgnoreCase("nointeract") && VanishPerms.canToggleNoInteract(player)) {
             status = VanishPerms.toggleNoInteract(player);
             message.append("no interact");
-        } else if (toggle.equalsIgnoreCase("nochat") && VanishPerms.canToggleNoChat(player)) {
-            status = VanishPerms.toggleNoChat(player);
-            message.append("no chat");
         } else if (toggle.equalsIgnoreCase("nohunger") && VanishPerms.canToggleNoHunger(player)) {
             status = VanishPerms.toggleNoHunger(player);
             message.append("no hunger");
-        } else if (toggle.equalsIgnoreCase("chests") && VanishPerms.canToggleSilentChestReads(player)) {
-            status = VanishPerms.toggleSilentChestReads(player);
-            message.append("silent chest reads");
-        } else if (toggle.equalsIgnoreCase("smoke") && VanishPerms.canToggleSmoke(player)) {
-            status = VanishPerms.toggleEffectSmoke(player);
-            message.append("smoke effect");
-        } else if (toggle.equalsIgnoreCase("explode") && VanishPerms.canToggleEffectExplode(player)) {
-            status = VanishPerms.toggleEffectExplode(player);
-            message.append("explosion effect");
-        } else if (toggle.equalsIgnoreCase("lightning") && VanishPerms.canToggleEffectLightning(player)) {
-            status = VanishPerms.toggleEffectLightning(player);
-            message.append("lightning effect");
-        } else if (toggle.equalsIgnoreCase("flames") && VanishPerms.canToggleEffectFlames(player)) {
-            status = VanishPerms.toggleEffectFlames(player);
-            message.append("flames effect");
-        } else if (toggle.equalsIgnoreCase("bats") && VanishPerms.canToggleEffectBats(player)) {
-            status = VanishPerms.toggleEffectBats(player);
-            message.append("bats effect");
         }
         if (message.length() > 0) {
             message.insert(0, ChatColor.DARK_AQUA + "Status: ");
